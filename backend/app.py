@@ -14,6 +14,10 @@ db.init_app(app)
 
 # Models import
 from models import *
+from routes.auth import auth_bp
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
+from routes.vehicles import vehicles_bp
+app.register_blueprint(vehicles_bp, url_prefix='/api/vehicles')
 
 
 @app.route('/api/test')
