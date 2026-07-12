@@ -95,6 +95,42 @@ class MaintenanceLog(db.Model):
             "cost": self.cost,
             "status": self.status
         }
+class FuelLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+    liters = db.Column(db.Float, nullable=False)
+    cost = db.Column(db.Float, nullable=False)
+    date = db.Column(db.String(20))
+
+    vehicle = db.relationship('Vehicle', backref='fuel_logs')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "vehicle_id": self.vehicle_id,
+            "liters": self.liters,
+            "cost": self.cost,
+            "date": self.date
+        }
+
+
+class Expense(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+    type = db.Column(db.String(50))
+    amount = db.Column(db.Float, nullable=False)
+    date = db.Column(db.String(20))
+
+    vehicle = db.relationship('Vehicle', backref='expenses')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "vehicle_id": self.vehicle_id,
+            "type": self.type,
+            "amount": self.amount,
+            "date": self.date
+        }
         
 # Teammate yahan aur models likhegi:
 # class Driver(db.Model): ...

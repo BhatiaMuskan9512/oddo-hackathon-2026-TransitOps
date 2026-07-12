@@ -23,6 +23,8 @@ from routes.maintenance import maintenance_bp
 app.register_blueprint(maintenance_bp, url_prefix='/api/maintenance')
 from routes.dashboard import dashboard_bp
 app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
+from routes.fuel_expense import fuel_expense_bp
+app.register_blueprint(fuel_expense_bp, url_prefix='/api')
 
 @app.route('/api/test', methods=['GET'])
 def test():

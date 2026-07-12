@@ -108,3 +108,28 @@ PUT http://127.0.0.1:5000/api/maintenance/1/close
 
 ### Check vehicle status again (should be "Available")
 GET http://127.0.0.1:5000/api/vehicles/1
+
+### Create fuel log
+POST http://127.0.0.1:5000/api/fuel
+Content-Type: application/json
+
+{
+  "vehicle_id": 1,
+  "liters": 40,
+  "cost": 4000,
+  "date": "2026-07-12"
+}
+
+### Create expense
+POST http://127.0.0.1:5000/api/expense
+Content-Type: application/json
+
+{
+  "vehicle_id": 1,
+  "type": "Toll",
+  "amount": 500,
+  "date": "2026-07-12"
+}
+
+### Get total operational cost for vehicle 1
+GET http://127.0.0.1:5000/api/vehicle/1/cost
