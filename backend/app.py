@@ -8,6 +8,7 @@ CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///transitops.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = 'your-secret-key-change-this'
 
 db.init_app(app)
 
@@ -23,7 +24,6 @@ from models import *
 @app.route('/api/test')
 def test():
     return jsonify({"message": "Backend is working!"})
-
 
 with app.app_context():
     db.create_all()

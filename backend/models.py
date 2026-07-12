@@ -26,3 +26,11 @@ class User(db.Model):
     )
 
 
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+# Teammate yahan models likhegi:
+# class Vehicle(db.Model): ...
+# class Driver(db.Model): ...
+# class Trip(db.Model): ...
