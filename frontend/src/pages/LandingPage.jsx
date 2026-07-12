@@ -34,11 +34,11 @@ function LandingPage()
                 <div className="hero-text">
                    
                     <h1>Your Fleet, <span style={{ color: "var(--coral)" }}>Fully in Control.</span></h1>
-                    <p> One platform to manage vehicles, drivers, trips and maintenance —
-                        without the spreadsheets and phone calls.</p>
+                    <p> One platform to manage vehicles, drivers, trips, maintenance and costs —
+          with live dashboards and reports, so nothing runs on spreadsheets anymore.</p>
                     <div className="hero-buttons">
                     <button className="btn-primary" onClick={()=>navigate('/login')}>Start Free </button>
-                    
+                   
                     </div>
                 </div>
               
@@ -65,7 +65,7 @@ function LandingPage()
               margin: '1rem auto 0', 
               lineHeight: '1.6' 
             }}>
-              Powered by cutting-edge AI technology and refined through thousands of successful career transitions
+              A Centralized digital solution to optimize vehicle dispatch, maintain strict safety compliance, and eliminate spredsheet choas.
             </p>
           </div>
             <div className="features-grid">
@@ -74,18 +74,19 @@ function LandingPage()
           <FeatureCard icon="🗺️" title="Trip Dispatch" desc="Assign a vehicle and driver in seconds and follow every trip from dispatch to completion.." />
           <FeatureCard icon="🛠️" title="Maintenance Alerts" desc="Log repairs and service history so vehicles never miss a scheduled check-up."/>
           <FeatureCard icon="⛽" title="Fuel & Expenses" desc="Record fuel and trip costs to know exactly what each vehicle is costing you."/>
-          <FeatureCard icon="📊" title="Live Dashboard" desc="See fleet utilization, active trips and pending maintenance at a glance."/>
+          <FeatureCard icon="📊" title="Reports & Analytics" desc="Track fuel efficiency, fleet utilization and vehicle ROI, then export it all to CSV."/>
         </div>  
         </section>
 
+            
         
         {/* PROCESS SECTION */}
     <section className="process" id="how-it-works">
     <div  style={{textAlign: 'center', marginBottom: '4rem'}}>
         <p style={{color: 'var(--coral)', fontWeight: 'bold', letterSpacing: '2px'}}>How TransitOps Works
 </p>
-        <h2 style={{fontFamily: 'Playfair Display', fontSize: '3.5rem', marginTop: '1rem'}}>Four Steps to Your Dream Career</h2>
-        <p style={{fontFamily: 'Fraunces', fontSize: '1.3rem', color: 'rgba(26,26,26,0.6)'}}>A streamlined journey from curiosity to clarity in just minutes</p>
+        <h2 style={{fontFamily: 'Playfair Display', fontSize: '3.5rem', marginTop: '1rem'}}>Move Smarter, Track Better</h2>
+        <p style={{fontFamily: 'Fraunces', fontSize: '1.3rem', color: 'rgba(26,26,26,0.6)'}}>Optimize your daily transport Logistics from dispatch to final Analytics in four simple steps</p>
     </div>
 
     <div className="process-grid">
@@ -111,6 +112,36 @@ function LandingPage()
         />
         </div>
     </section>
+
+    {/* ---------- ROLES ---------- */}
+      <section id="roles" className="testimonials-section">
+        <h2 style={{ fontFamily: "Playfair Display", textAlign: "center" }}>
+          Built for Every Role in Your Fleet
+        </h2>
+        <div className="testimonials-grid">
+          <FeatureCard
+            icon="🧑‍💼"
+            title="Fleet Manager"
+            desc="Oversee vehicles, plan maintenance and track fleet efficiency from one dashboard."
+          />
+          <FeatureCard
+            icon="🚚"
+            title="Driver"
+            desc="Create trips, pick an available vehicle and stay on top of every active delivery."
+          />
+          <FeatureCard
+            icon="🛡️"
+            title="Safety Officer"
+            desc="Check license validity, safety scores and driver compliance at a glance."
+          />
+          <FeatureCard
+            icon="💰"
+            title="Financial Analyst"
+            desc="Review fuel costs, maintenance spend and vehicle ROI without touching a spreadsheet."
+          />
+        </div>
+      </section>
+
         {/* TESTIMONIALS SECTION */}
     <section className="testimonials" id="testimonials">
         <div style={{textAlign: 'center', marginBottom: '4rem'}}>
@@ -168,15 +199,15 @@ function LandingPage()
 
             <FooterSection
             title="Product"
-            links={["Features", "Pricing", "API", "Case Studies"]}
+            links={["Features", "How it Works", "Roles"]}
           />
           <FooterSection
             title="Company"
-            links={["About", "Careers", "Blog", "Contact"]}
+            links={["About", "Contact"]}
           />
           <FooterSection
             title="Legal"
-            links={["Privacy", "Terms", "Security", "GDPR"]}
+            links={["Privacy", "Terms"]}
           />
 
         </div>
