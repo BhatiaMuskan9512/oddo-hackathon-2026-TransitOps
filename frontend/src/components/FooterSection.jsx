@@ -2,21 +2,16 @@ import { useNavigate } from "react-router-dom";
 
 
 const LINK_ROUTES = {
-  // Product
-  "Features":    "/#features",
-  "Pricing":     "/",
-  "API":         "/",
-  "Case Studies":"/",
+   // Platform
+  "Features": "/#features",
+  "How it Works": "/#how-it-works",
+  "Roles": "/#roles",
   // Company
-  "About":       "/about",
-  "Careers":     "/about",
-  "Blog":        "/",
-  "Contact":     "/contact",
+  "About": "/about",
+  "Contact": "/contact",
   // Legal
-  "Privacy":     "/privacy",
-  "Terms":       "/terms",
-  "Security":    "/privacy",
-  "GDPR":        "/privacy",
+  "Privacy": "/privacy",
+  "Terms": "/terms",
 };
 
 function FooterSection({ title, links }) {
