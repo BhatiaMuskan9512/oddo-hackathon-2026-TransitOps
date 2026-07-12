@@ -16,11 +16,6 @@ db.init_app(app)
 from models import *
 
 
-
-# @app.route('/api/test', methods=['GET'])
-# def test():
-#     return jsonify({"message": "Backend is working!"})
-
 @app.route('/api/test')
 def test():
     return jsonify({"message": "Backend is working!"})
