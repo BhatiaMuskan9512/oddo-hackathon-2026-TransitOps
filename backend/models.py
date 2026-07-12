@@ -44,7 +44,7 @@ class Driver(db.Model):
             "safety_score": self.safety_score,
             "status": self.status
         }
-        
+
 class Trip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     source = db.Column(db.String(100), nullable=False)
@@ -75,6 +75,27 @@ class Trip(db.Model):
             "fuel_consumed": self.fuel_consumed,
             "status": self.status
         }
+class MaintenanceLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+    type = db.Column(db.String(100))
+    description = db.Column(db.Text)
+    cost = db.Column(db.Float, default=0)
+    status = db.Column(db.String(20), default="Open")  # Open, Closed
+
+    vehicle = db.relationship('Vehicle', backref='maintenance_logs')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "vehicle_id": self.vehicle_id,
+            "vehicle_registration": self.vehicle.registration_number if self.vehicle else None,
+            "type": self.type,
+            "description": self.description,
+            "cost": self.cost,
+            "status": self.status
+        }
+        
 # Teammate yahan aur models likhegi:
 # class Driver(db.Model): ...
 # class Trip(db.Model): ...

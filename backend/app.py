@@ -19,6 +19,10 @@ from routes.drivers import drivers_bp
 app.register_blueprint(drivers_bp, url_prefix='/api/drivers')
 from routes.trips import trips_bp
 app.register_blueprint(trips_bp, url_prefix='/api/trips')
+from routes.maintenance import maintenance_bp
+app.register_blueprint(maintenance_bp, url_prefix='/api/maintenance')
+from routes.dashboard import dashboard_bp
+app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
 
 @app.route('/api/test', methods=['GET'])
 def test():
