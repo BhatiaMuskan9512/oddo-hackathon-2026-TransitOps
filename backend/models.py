@@ -48,15 +48,6 @@ class Vehicle(db.Model):
             "acquisition_cost": self.acquisition_cost,
             "status": self.status
         }
-class Driver(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    license_number = db.Column(db.String(50), unique=True, nullable=False)
-    license_category = db.Column(db.String(20))
-    license_expiry_date = db.Column(db.Date, nullable=False)
-    contact_number = db.Column(db.String(15))
-    safety_score = db.Column(db.Float, default=100)
-    status = db.Column(db.String(20), default="Available")
 
 
 class Driver(db.Model):
