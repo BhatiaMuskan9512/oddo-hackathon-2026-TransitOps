@@ -1,22 +1,26 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 from datetime import date
-from models import db, Trip, Vehicle, Driver
+from database import db
+from models import Trip, Vehicle, Driver
 
 trips_bp = Blueprint('trips', __name__)
 
 # Sab trips dekho
 @trips_bp.route('/', methods=['GET'])
+@jwt_required()
 def get_trips():
     status = request.args.get('status')
     query = Trip.query
     if status:
-        query = query.filter_by(status=status)
+        query = query.filter_by(trip_status=status)
     trips = query.all()
     return jsonify([t.to_dict() for t in trips]), 200
 
 
 # Ek specific trip dekho
 @trips_bp.route('/<int:id>', methods=['GET'])
+@jwt_required()
 def get_trip(id):
     trip = Trip.query.get_or_404(id)
     return jsonify(trip.to_dict()), 200
@@ -24,6 +28,7 @@ def get_trip(id):
 
 # Naya trip banao (status = Draft)
 @trips_bp.route('/', methods=['POST'])
+@jwt_required()
 def create_trip():
     data = request.get_json()
 
@@ -43,7 +48,7 @@ def create_trip():
     # Business Rule: Suspended/expired license drivers assign nahi ho sakte
     if driver.status != "Available":
         return jsonify({"error": f"Driver is {driver.status}, cannot be selected"}), 400
-    if driver.license_expiry_date < date.today():
+    if driver.license_expiry < date.today():
         return jsonify({"error": "Driver's license has expired"}), 400
 
     # Business Rule: Cargo weight <= vehicle max load capacity
@@ -57,7 +62,8 @@ def create_trip():
         driver_id=driver.id,
         cargo_weight=cargo_weight,
         planned_distance=data.get('planned_distance'),
-        status="Draft"
+        revenue=data.get('revenue', 0),
+        trip_status="Draft"
     )
     db.session.add(trip)
     db.session.commit()
@@ -66,14 +72,15 @@ def create_trip():
 
 # Trip DISPATCH karo
 @trips_bp.route('/<int:id>/dispatch', methods=['PUT'])
+@jwt_required()
 def dispatch_trip(id):
     trip = Trip.query.get_or_404(id)
 
-    if trip.status != "Draft":
-        return jsonify({"error": f"Trip is {trip.status}, cannot dispatch"}), 400
+    if trip.trip_status != "Draft":
+        return jsonify({"error": f"Trip is {trip.trip_status}, cannot dispatch"}), 400
 
-    vehicle = trip.vehicle
-    driver = trip.driver
+    vehicle = Vehicle.query.get(trip.vehicle_id)
+    driver = Driver.query.get(trip.driver_id)
 
     if vehicle.status != "Available":
         return jsonify({"error": f"Vehicle is {vehicle.status}, cannot dispatch"}), 400
@@ -83,7 +90,7 @@ def dispatch_trip(id):
     # Automatic status transitions
     vehicle.status = "On Trip"
     driver.status = "On Trip"
-    trip.status = "Dispatched"
+    trip.trip_status = "Dispatched"
 
     db.session.commit()
     return jsonify(trip.to_dict()), 200
@@ -91,25 +98,26 @@ def dispatch_trip(id):
 
 # Trip COMPLETE karo
 @trips_bp.route('/<int:id>/complete', methods=['PUT'])
+@jwt_required()
 def complete_trip(id):
     trip = Trip.query.get_or_404(id)
     data = request.get_json()
 
-    if trip.status != "Dispatched":
-        return jsonify({"error": f"Trip is {trip.status}, cannot complete"}), 400
+    if trip.trip_status != "Dispatched":
+        return jsonify({"error": f"Trip is {trip.trip_status}, cannot complete"}), 400
 
     trip.final_odometer = data.get('final_odometer')
     trip.fuel_consumed = data.get('fuel_consumed')
-    trip.status = "Completed"
+    trip.trip_status = "Completed"
 
     # Vehicle ka odometer update karo aur Available karo
-    vehicle = trip.vehicle
+    vehicle = Vehicle.query.get(trip.vehicle_id)
     if trip.final_odometer:
         vehicle.odometer = trip.final_odometer
     vehicle.status = "Available"
 
     # Driver Available karo
-    driver = trip.driver
+    driver = Driver.query.get(trip.driver_id)
     driver.status = "Available"
 
     db.session.commit()
@@ -118,17 +126,20 @@ def complete_trip(id):
 
 # Trip CANCEL karo
 @trips_bp.route('/<int:id>/cancel', methods=['PUT'])
+@jwt_required()
 def cancel_trip(id):
     trip = Trip.query.get_or_404(id)
 
-    if trip.status not in ["Draft", "Dispatched"]:
-        return jsonify({"error": f"Trip is {trip.status}, cannot cancel"}), 400
+    if trip.trip_status not in ["Draft", "Dispatched"]:
+        return jsonify({"error": f"Trip is {trip.trip_status}, cannot cancel"}), 400
 
     # Agar dispatched thi, to vehicle/driver ko Available wapas karo
-    if trip.status == "Dispatched":
-        trip.vehicle.status = "Available"
-        trip.driver.status = "Available"
+    if trip.trip_status == "Dispatched":
+        vehicle = Vehicle.query.get(trip.vehicle_id)
+        driver = Driver.query.get(trip.driver_id)
+        vehicle.status = "Available"
+        driver.status = "Available"
 
-    trip.status = "Cancelled"
+    trip.trip_status = "Cancelled"
     db.session.commit()
     return jsonify(trip.to_dict()), 200
