@@ -15,6 +15,8 @@ from routes.auth import auth_bp
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 from routes.vehicles import vehicles_bp
 app.register_blueprint(vehicles_bp, url_prefix='/api/vehicles')
+from routes.drivers import drivers_bp
+app.register_blueprint(drivers_bp, url_prefix='/api/drivers')
 
 @app.route('/api/test', methods=['GET'])
 def test():

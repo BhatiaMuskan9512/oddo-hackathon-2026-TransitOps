@@ -27,3 +27,18 @@ Content-Type: application/json
 
 ### Delete vehicle (ID = 1)
 DELETE http://127.0.0.1:5000/api/vehicles/1
+
+### Create a driver
+POST http://127.0.0.1:5000/api/drivers/
+Content-Type: application/json
+
+{
+  "name": "Alex Kumar",
+  "license_number": "DL123456789",
+  "license_category": "LMV",
+  "license_expiry_date": "2027-05-20",
+  "contact_number": "9876543210"
+}
+
+### Get all drivers
+GET http://127.0.0.1:5000/api/drivers/
