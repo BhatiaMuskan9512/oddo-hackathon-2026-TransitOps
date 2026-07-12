@@ -44,6 +44,37 @@ class Driver(db.Model):
             "safety_score": self.safety_score,
             "status": self.status
         }
+        
+class Trip(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    source = db.Column(db.String(100), nullable=False)
+    destination = db.Column(db.String(100), nullable=False)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+    driver_id = db.Column(db.Integer, db.ForeignKey('driver.id'), nullable=False)
+    cargo_weight = db.Column(db.Float, nullable=False)
+    planned_distance = db.Column(db.Float)
+    final_odometer = db.Column(db.Float)
+    fuel_consumed = db.Column(db.Float)
+    status = db.Column(db.String(20), default="Draft")  # Draft, Dispatched, Completed, Cancelled
+
+    vehicle = db.relationship('Vehicle', backref='trips')
+    driver = db.relationship('Driver', backref='trips')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "source": self.source,
+            "destination": self.destination,
+            "vehicle_id": self.vehicle_id,
+            "driver_id": self.driver_id,
+            "vehicle_registration": self.vehicle.registration_number if self.vehicle else None,
+            "driver_name": self.driver.name if self.driver else None,
+            "cargo_weight": self.cargo_weight,
+            "planned_distance": self.planned_distance,
+            "final_odometer": self.final_odometer,
+            "fuel_consumed": self.fuel_consumed,
+            "status": self.status
+        }
 # Teammate yahan aur models likhegi:
 # class Driver(db.Model): ...
 # class Trip(db.Model): ...

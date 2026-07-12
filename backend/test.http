@@ -42,3 +42,37 @@ Content-Type: application/json
 
 ### Get all drivers
 GET http://127.0.0.1:5000/api/drivers/
+
+### Create a trip
+POST http://127.0.0.1:5000/api/trips/
+Content-Type: application/json
+
+{
+  "source": "Ahmedabad",
+  "destination": "Surat",
+  "vehicle_id": 1,
+  "driver_id": 1,
+  "cargo_weight": 450,
+  "planned_distance": 280
+}
+
+### Get all trips
+GET http://127.0.0.1:5000/api/trips/
+
+### Dispatch trip (ID = 1)
+PUT http://127.0.0.1:5000/api/trips/1/dispatch
+
+### Check vehicle status after dispatch (should be "On Trip")
+GET http://127.0.0.1:5000/api/vehicles/1
+
+### Complete trip (ID = 1)
+PUT http://127.0.0.1:5000/api/trips/1/complete
+Content-Type: application/json
+
+{
+  "final_odometer": 5280,
+  "fuel_consumed": 35
+}
+
+### Check vehicle status after complete (should be "Available")
+GET http://127.0.0.1:5000/api/vehicles/1
