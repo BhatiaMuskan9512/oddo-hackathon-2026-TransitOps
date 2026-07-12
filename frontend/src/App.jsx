@@ -10,6 +10,9 @@ import LoginPage from './pages/LoginPage';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import VehiclesPage from './pages/VehiclesPage';
+import DriversPage from './pages/DriversPage';
+import TripsPage from './pages/TripsPage';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -24,6 +27,9 @@ function App() {
         <Route path="/layout" element={<Layout/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/vehicles" element={<VehiclesPage/>}/>
+        <Route path="/drivers" element={<DriversPage/>}/>
+        <Route path="/trips" element={<TripsPage/>}/>
+
 
       </Routes>
     </Router>
