@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
-from models import db, Driver
+from database import db
+from models import Driver
 
 drivers_bp = Blueprint('drivers', __name__)
 
@@ -24,14 +25,14 @@ def create_driver():
     if Driver.query.filter_by(license_number=data.get('license_number')).first():
         return jsonify({"error": "License number must be unique"}), 400
     try:
-        expiry_date = datetime.strptime(data.get('license_expiry_date'), '%Y-%m-%d').date()
+        expiry_date = datetime.strptime(data.get('license_expiry'), '%Y-%m-%d').date()
     except (ValueError, TypeError):
-        return jsonify({"error": "license_expiry_date must be in YYYY-MM-DD format"}), 400
+        return jsonify({"error": "license_expiry must be in YYYY-MM-DD format"}), 400
     driver = Driver(
         name=data.get('name'),
         license_number=data.get('license_number'),
         license_category=data.get('license_category'),
-        license_expiry_date=expiry_date,
+        license_expiry=expiry_date,
         contact_number=data.get('contact_number'),
         safety_score=data.get('safety_score', 100),
         status=data.get('status', 'Available')
@@ -49,8 +50,8 @@ def update_driver(id):
     driver.contact_number = data.get('contact_number', driver.contact_number)
     driver.safety_score = data.get('safety_score', driver.safety_score)
     driver.status = data.get('status', driver.status)
-    if data.get('license_expiry_date'):
-        driver.license_expiry_date = datetime.strptime(data.get('license_expiry_date'), '%Y-%m-%d').date()
+    if data.get('license_expiry'):
+        driver.license_expiry = datetime.strptime(data.get('license_expiry'), '%Y-%m-%d').date()
     db.session.commit()
     return jsonify(driver.to_dict()), 200
 

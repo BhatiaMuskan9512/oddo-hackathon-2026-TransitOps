@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
-from models import db, Vehicle, Driver, Trip
+from database import db
+from models import Vehicle, Driver, Trip
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
@@ -11,8 +12,8 @@ def get_dashboard():
     in_maintenance = Vehicle.query.filter_by(status="In Shop").count()
     on_trip_vehicles = Vehicle.query.filter_by(status="On Trip").count()
 
-    active_trips = Trip.query.filter_by(status="Dispatched").count()
-    pending_trips = Trip.query.filter_by(status="Draft").count()
+    active_trips = Trip.query.filter_by(trip_status="Dispatched").count()
+    pending_trips = Trip.query.filter_by(trip_status="Draft").count()
 
     drivers_on_duty = Driver.query.filter_by(status="On Trip").count()
 

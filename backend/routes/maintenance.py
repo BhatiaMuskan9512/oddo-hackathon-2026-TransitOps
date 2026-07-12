@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from models import db, MaintenanceLog, Vehicle
+from database import db
+from models import MaintenanceLog, Vehicle
 
 maintenance_bp = Blueprint('maintenance', __name__)
 
@@ -17,10 +18,9 @@ def create_maintenance():
 
     log = MaintenanceLog(
         vehicle_id=vehicle.id,
-        type=data.get('type'),
         description=data.get('description'),
         cost=data.get('cost', 0),
-        status="Open"
+        status="In Progress"
     )
     # Business Rule: Maintenance create hote hi vehicle "In Shop"
     vehicle.status = "In Shop"
@@ -32,10 +32,10 @@ def create_maintenance():
 @maintenance_bp.route('/<int:id>/close', methods=['PUT'])
 def close_maintenance(id):
     log = MaintenanceLog.query.get_or_404(id)
-    log.status = "Closed"
+    log.status = "Completed"
 
     # Business Rule: Close hone pe vehicle Available (agar Retired nahi hai)
-    vehicle = log.vehicle
+    vehicle = Vehicle.query.get(log.vehicle_id)
     if vehicle.status != "Retired":
         vehicle.status = "Available"
 
