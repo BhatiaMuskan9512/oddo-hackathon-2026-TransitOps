@@ -18,6 +18,16 @@ from routes.auth import auth_bp
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 from routes.vehicles import vehicles_bp
 app.register_blueprint(vehicles_bp, url_prefix='/api/vehicles')
+from routes.drivers import drivers_bp
+app.register_blueprint(drivers_bp, url_prefix='/api/drivers')
+from routes.trips import trips_bp
+app.register_blueprint(trips_bp, url_prefix='/api/trips')
+from routes.maintenance import maintenance_bp
+app.register_blueprint(maintenance_bp, url_prefix='/api/maintenance')
+from routes.dashboard import dashboard_bp
+app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
+from routes.fuel_expense import fuel_expense_bp
+app.register_blueprint(fuel_expense_bp, url_prefix='/api')
 
 
 @app.route('/api/test')

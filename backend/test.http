@@ -27,3 +27,109 @@ Content-Type: application/json
 
 ### Delete vehicle (ID = 1)
 DELETE http://127.0.0.1:5000/api/vehicles/1
+
+### Create a driver
+POST http://127.0.0.1:5000/api/drivers/
+Content-Type: application/json
+
+{
+  "name": "Alex Kumar",
+  "license_number": "DL123456789",
+  "license_category": "LMV",
+  "license_expiry_date": "2027-05-20",
+  "contact_number": "9876543210"
+}
+
+### Get all drivers
+GET http://127.0.0.1:5000/api/drivers/
+
+### Create a trip
+POST http://127.0.0.1:5000/api/trips/
+Content-Type: application/json
+
+{
+  "source": "Ahmedabad",
+  "destination": "Surat",
+  "vehicle_id": 1,
+  "driver_id": 1,
+  "cargo_weight": 450,
+  "planned_distance": 280
+}
+
+### Get all trips
+GET http://127.0.0.1:5000/api/trips/
+
+### Dispatch trip (ID = 1)
+PUT http://127.0.0.1:5000/api/trips/1/dispatch
+
+### Check vehicle status after dispatch (should be "On Trip")
+GET http://127.0.0.1:5000/api/vehicles/1
+
+### Complete trip (ID = 1)
+PUT http://127.0.0.1:5000/api/trips/1/complete
+Content-Type: application/json
+
+{
+  "final_odometer": 5280,
+  "fuel_consumed": 35
+}
+
+### Check vehicle status after complete (should be "Available")
+GET http://127.0.0.1:5000/api/vehicles/1
+
+### Create a vehicle (for testing)
+POST http://127.0.0.1:5000/api/vehicles/
+Content-Type: application/json
+
+{
+  "registration_number": "GJ01AB1234",
+  "vehicle_name": "Van-05",
+  "vehicle_type": "Van",
+  "max_load_capacity": 500,
+  "acquisition_cost": 800000
+}
+
+### Create maintenance log (vehicle_id = 1)
+POST http://127.0.0.1:5000/api/maintenance/
+Content-Type: application/json
+
+{
+  "vehicle_id": 1,
+  "type": "Oil Change",
+  "description": "Routine oil change",
+  "cost": 1500
+}
+
+### Check vehicle status (should be "In Shop")
+GET http://127.0.0.1:5000/api/vehicles/1
+
+### Close maintenance (id = 1)
+PUT http://127.0.0.1:5000/api/maintenance/1/close
+
+### Check vehicle status again (should be "Available")
+GET http://127.0.0.1:5000/api/vehicles/1
+
+### Create fuel log
+POST http://127.0.0.1:5000/api/fuel
+Content-Type: application/json
+
+{
+  "vehicle_id": 1,
+  "liters": 40,
+  "cost": 4000,
+  "date": "2026-07-12"
+}
+
+### Create expense
+POST http://127.0.0.1:5000/api/expense
+Content-Type: application/json
+
+{
+  "vehicle_id": 1,
+  "type": "Toll",
+  "amount": 500,
+  "date": "2026-07-12"
+}
+
+### Get total operational cost for vehicle 1
+GET http://127.0.0.1:5000/api/vehicle/1/cost
