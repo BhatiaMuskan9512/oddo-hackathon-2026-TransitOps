@@ -1,0 +1,29 @@
+### Get all vehicles
+GET http://127.0.0.1:5000/api/vehicles/
+
+### Create a vehicle
+POST http://127.0.0.1:5000/api/vehicles/
+Content-Type: application/json
+
+{
+  "registration_number": "GJ01AB1234",
+  "vehicle_name": "Van-05",
+  "vehicle_type": "Van",
+  "max_load_capacity": 500,
+  "acquisition_cost": 800000
+}
+
+### Get single vehicle (ID = 1)
+GET http://127.0.0.1:5000/api/vehicles/1
+
+### Update vehicle (ID = 1)
+PUT http://127.0.0.1:5000/api/vehicles/1
+Content-Type: application/json
+
+{
+  "status": "In Shop",
+  "odometer": 1500
+}
+
+### Delete vehicle (ID = 1)
+DELETE http://127.0.0.1:5000/api/vehicles/1
