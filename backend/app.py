@@ -1,6 +1,7 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
+
+from database import db
 
 app = Flask(__name__)
 CORS(app)
@@ -8,18 +9,18 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///transitops.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+db.init_app(app)
+
+# Models import
+from models import *
 
 
-class Vehicle(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    registration_no = db.Column(db.String(50), unique=True, nullable=False)
-    vehicle_name = db.Column(db.String(100), nullable=False)
-    vehicle_type = db.Column(db.String(50))
-    status = db.Column(db.String(20), default="Available")
 
+# @app.route('/api/test', methods=['GET'])
+# def test():
+#     return jsonify({"message": "Backend is working!"})
 
-@app.route('/api/test', methods=['GET'])
+@app.route('/api/test')
 def test():
     return jsonify({"message": "Backend is working!"})
 
