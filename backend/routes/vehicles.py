@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 from database import db
 from models import Vehicle
 
@@ -6,6 +7,7 @@ vehicles_bp = Blueprint('vehicles', __name__)
 
 # Sab vehicles dekho (filters ke saath)
 @vehicles_bp.route('/', methods=['GET'])
+@jwt_required()
 def get_vehicles():
     status = request.args.get('status')
     vehicle_type = request.args.get('type')
@@ -21,12 +23,14 @@ def get_vehicles():
 
 # Ek specific vehicle dekho
 @vehicles_bp.route('/<int:id>', methods=['GET'])
+@jwt_required()
 def get_vehicle(id):
     vehicle = Vehicle.query.get_or_404(id)
     return jsonify(vehicle.to_dict()), 200
 
 # Naya vehicle banao
 @vehicles_bp.route('/', methods=['POST'])
+@jwt_required()
 def create_vehicle():
     data = request.get_json()
     
@@ -48,6 +52,7 @@ def create_vehicle():
 
 # Vehicle update karo
 @vehicles_bp.route('/<int:id>', methods=['PUT'])
+@jwt_required()
 def update_vehicle(id):
     vehicle = Vehicle.query.get_or_404(id)
     data = request.get_json()
@@ -64,6 +69,7 @@ def update_vehicle(id):
 
 # Vehicle delete karo
 @vehicles_bp.route('/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_vehicle(id):
     vehicle = Vehicle.query.get_or_404(id)
     db.session.delete(vehicle)

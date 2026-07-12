@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify
+from flask_jwt_extended import jwt_required
 from database import db
 from models import Vehicle, Driver, Trip
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
 @dashboard_bp.route('/', methods=['GET'])
+@jwt_required()
 def get_dashboard():
     total_vehicles = Vehicle.query.count()
     active_vehicles = Vehicle.query.filter(Vehicle.status != "Retired").count()

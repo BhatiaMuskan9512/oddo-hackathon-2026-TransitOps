@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 from datetime import date
 from database import db
 from models import Trip, Vehicle, Driver
@@ -7,6 +8,7 @@ trips_bp = Blueprint('trips', __name__)
 
 # Sab trips dekho
 @trips_bp.route('/', methods=['GET'])
+@jwt_required()
 def get_trips():
     status = request.args.get('status')
     query = Trip.query
@@ -18,6 +20,7 @@ def get_trips():
 
 # Ek specific trip dekho
 @trips_bp.route('/<int:id>', methods=['GET'])
+@jwt_required()
 def get_trip(id):
     trip = Trip.query.get_or_404(id)
     return jsonify(trip.to_dict()), 200
@@ -25,6 +28,7 @@ def get_trip(id):
 
 # Naya trip banao (status = Draft)
 @trips_bp.route('/', methods=['POST'])
+@jwt_required()
 def create_trip():
     data = request.get_json()
 
@@ -68,6 +72,7 @@ def create_trip():
 
 # Trip DISPATCH karo
 @trips_bp.route('/<int:id>/dispatch', methods=['PUT'])
+@jwt_required()
 def dispatch_trip(id):
     trip = Trip.query.get_or_404(id)
 
@@ -93,6 +98,7 @@ def dispatch_trip(id):
 
 # Trip COMPLETE karo
 @trips_bp.route('/<int:id>/complete', methods=['PUT'])
+@jwt_required()
 def complete_trip(id):
     trip = Trip.query.get_or_404(id)
     data = request.get_json()
@@ -120,6 +126,7 @@ def complete_trip(id):
 
 # Trip CANCEL karo
 @trips_bp.route('/<int:id>/cancel', methods=['PUT'])
+@jwt_required()
 def cancel_trip(id):
     trip = Trip.query.get_or_404(id)
 

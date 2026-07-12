@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 from datetime import datetime
 from database import db
 from models import Driver
@@ -6,6 +7,7 @@ from models import Driver
 drivers_bp = Blueprint('drivers', __name__)
 
 @drivers_bp.route('/', methods=['GET'])
+@jwt_required()
 def get_drivers():
     status = request.args.get('status')
     query = Driver.query
@@ -15,11 +17,13 @@ def get_drivers():
     return jsonify([d.to_dict() for d in drivers]), 200
 
 @drivers_bp.route('/<int:id>', methods=['GET'])
+@jwt_required()
 def get_driver(id):
     driver = Driver.query.get_or_404(id)
     return jsonify(driver.to_dict()), 200
 
 @drivers_bp.route('/', methods=['POST'])
+@jwt_required()
 def create_driver():
     data = request.get_json()
     if Driver.query.filter_by(license_number=data.get('license_number')).first():
@@ -42,6 +46,7 @@ def create_driver():
     return jsonify(driver.to_dict()), 201
 
 @drivers_bp.route('/<int:id>', methods=['PUT'])
+@jwt_required()
 def update_driver(id):
     driver = Driver.query.get_or_404(id)
     data = request.get_json()
@@ -56,6 +61,7 @@ def update_driver(id):
     return jsonify(driver.to_dict()), 200
 
 @drivers_bp.route('/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_driver(id):
     driver = Driver.query.get_or_404(id)
     db.session.delete(driver)
